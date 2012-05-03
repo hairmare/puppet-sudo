@@ -15,7 +15,7 @@ class sudo::params {
     gentoo: {
       $package = 'sudo'
       $config_file = '/etc/sudoers'
-      $config_dir = '/etc/sudoers.d'
+      $config_dir = '/etc/sudoers.d/'
       $source = 'puppet:///modules/sudo/sudoers.portage'
     }
     default: {
