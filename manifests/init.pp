@@ -13,12 +13,14 @@
 #
 #   [*package*]
 #     Name of the package.
-#     Only set this, if your platform is not supported or you know, what you're doing.
+#     Only set this, if your platform is not supported or you know,
+#     what you're doing.
 #     Default: auto-set, platform specific
 #
 #   [*config_file*]
 #     Main configuration file.
-#     Only set this, if your platform is not supported or you know, what you're doing.
+#     Only set this, if your platform is not supported or you know,
+#     what you're doing.
 #     Default: auto-set, platform specific
 #
 #   [*config_file_replace*]
@@ -27,12 +29,14 @@
 #
 #   [*config_dir*]
 #     Main configuration directory
-#     Only set this, if your platform is not supported or you know, what you're doing.
+#     Only set this, if your platform is not supported or you know,
+#     what you're doing.
 #     Default: auto-set, platform specific
 #
 #   [*source*]
 #     Alternate source file location
-#     Only set this, if your platform is not supported or you know, what you're doing.
+#     Only set this, if your platform is not supported or you know,
+#     what you're doing.
 #     Default: auto-set, platform specific
 #
 # Actions:
@@ -43,7 +47,11 @@
 #
 # Sample Usage:
 #   class { 'locales':
-#     locales => [ 'en_US.UTF-8 UTF-8', 'de_DE.UTF-8 UTF-8', 'en_GB.UTF-8 UTF-8', ],
+#     locales => [
+#       'en_US.UTF-8 UTF-8',
+#       'de_DE.UTF-8 UTF-8',
+#       'en_GB.UTF-8 UTF-8',
+#     ],
 #   }
 #
 # [Remember: No empty lines between comments and class definition]
@@ -55,7 +63,6 @@ class sudo(
   $config_file_replace = true,
   $config_dir = $sudo::params::config_dir,
   $source = $sudo::params::source
-
 ) inherits sudo::params {
 
   case $ensure {
@@ -83,17 +90,17 @@ class sudo(
   file { $config_file:
     ensure  => $ensure,
     owner   => 'root',
-    group   => 'root',
+    group   => $sudo::params::config_file_group,
     mode    => '0440',
     replace => $config_file_replace,
     source  => $source,
     require => Package[$package],
   }
-  
+
   file { $config_dir:
     ensure  => $dir_ensure,
     owner   => 'root',
-    group   => 'root',
+    group   => $sudo::params::config_file_group,
     mode    => '0550',
     recurse => true,
     purge   => true,
