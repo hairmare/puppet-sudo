@@ -40,29 +40,31 @@
 #     Default: auto-set, platform specific
 #
 # Actions:
-#   Installs locales package and generates specified locales
+#   Installs and configures the sudo package for managing system security and access.
 #
 # Requires:
 #   Nothing
 #
 # Sample Usage:
-#   class { 'locales':
-#     locales => [
-#       'en_US.UTF-8 UTF-8',
-#       'de_DE.UTF-8 UTF-8',
-#       'en_GB.UTF-8 UTF-8',
-#     ],
+#   class { 'sudo':
+#      ensure = 'present',
+#      autoupgrade = false,
+#      package = 'sudo'
+#      config_file = /etc/sudoers
+#      config_file_replace = true,
+#      config_dir = '/etc/sudoers.d'
+#      source = "puppet:///modules/${module_name}/sudoers.custom"
 #   }
 #
 # [Remember: No empty lines between comments and class definition]
 class sudo(
   $ensure = 'present',
   $autoupgrade = false,
-  $package = $sudo::params::package,
-  $config_file = $sudo::params::config_file,
+  $package = hiera("sudo_package"),
+  $config_file = hiera("sudo_config_file"),
   $config_file_replace = true,
-  $config_dir = $sudo::params::config_dir,
-  $source = $sudo::params::source
+  $config_dir = hiera("sudo_config_dir"),
+  $source = hiera("sudo_source")
 ) inherits sudo::params {
 
   case $ensure {
@@ -90,7 +92,7 @@ class sudo(
   file { $config_file:
     ensure  => $ensure,
     owner   => 'root',
-    group   => $sudo::params::config_file_group,
+    group   => hiera("sudo_config_file_group"),
     mode    => '0440',
     replace => $config_file_replace,
     source  => $source,
@@ -100,7 +102,7 @@ class sudo(
   file { $config_dir:
     ensure  => $dir_ensure,
     owner   => 'root',
-    group   => $sudo::params::config_file_group,
+    group   => hiera("sudo_config_file_group"),
     mode    => '0550',
     recurse => true,
     purge   => true,
