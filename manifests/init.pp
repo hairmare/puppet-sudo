@@ -65,7 +65,7 @@ class sudo(
   $config_file_replace = true,
   $config_dir = hiera("sudo_config_dir"),
   $source = hiera("sudo_source")
-) inherits sudo::params {
+) {
 
   case $ensure {
     /(present)/: {
