@@ -37,14 +37,12 @@
 #   }
 #
 # [Remember: No empty lines between comments and class definition]
-define sudo::conf(
-  $ensure = present,
-  $priority = hiera('sudo_priority'),
-  $content = undef,
-  $source = undef,
-  $sudo_config_dir = hiera('sudo_config_dir')
-) {
-
+define sudo::conf (
+  $ensure          = present,
+  $priority        = hiera('sudo_priority'),
+  $content         = undef,
+  $source          = undef,
+  $sudo_config_dir = hiera('sudo_config_dir')) {
   Class['sudo'] -> Sudo::Conf[$name]
 
   if $content != undef {
@@ -57,7 +55,7 @@ define sudo::conf(
     ensure  => $ensure,
     path    => "${sudo_config_dir}${priority}_${name}",
     owner   => 'root',
-    group   => hiera('sudo_config_file_group')
+    group   => hiera('sudo_config_file_group'),
     mode    => '0440',
     source  => $source,
     content => $content_real,
