@@ -58,10 +58,10 @@ class sudo(
   $autoupgrade = false,
   $package = $sudo::params::package,
   $purge = true,
-  $config_file = $sudo::params::config_file"),
+  $config_file = $sudo::params::config_file,
   $config_file_replace = true,
-  $config_dir = $sudo::params::config_dir"),
-  $source = $sudo::param::source")
+  $config_dir = $sudo::params::config_dir,
+  $source = $sudo::param::source
 ) {
 
   case $ensure {

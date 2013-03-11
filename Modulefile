@@ -1,4 +1,3 @@
-<<<<<<< HEAr
 name 'hairmare-sudo'
 version '2.2.0'
 author 'saz, hairmare'
