@@ -50,26 +50,18 @@
 #   Nothing
 #
 # Sample Usage:
-#   class { 'sudo':
-#      ensure = 'present',
-#      autoupgrade = false,
-#      package = 'sudo'
-#      config_file = /etc/sudoers
-#      config_file_replace = true,
-#      config_dir = '/etc/sudoers.d'
-#      source = "puppet:///modules/${module_name}/sudoers.custom"
-#   }
+#   class { 'sudo': }
 #
 # [Remember: No empty lines between comments and class definition]
 class sudo(
   $ensure = 'present',
   $autoupgrade = false,
-  $package = hiera("sudo_package"),
+  $package = $sudo::params::package,
   $purge = true,
-  $config_file = hiera("sudo_config_file"),
+  $config_file = $sudo::params::config_file"),
   $config_file_replace = true,
-  $config_dir = hiera("sudo_config_dir"),
-  $source = hiera("sudo_source")
+  $config_dir = $sudo::params::config_dir"),
+  $source = $sudo::param::source")
 ) {
 
   case $ensure {
@@ -97,7 +89,7 @@ class sudo(
   file { $config_file:
     ensure  => $ensure,
     owner   => 'root',
-    group   => hiera("sudo_config_file_group"),
+    group   => $sudo::params::config_file_group,
     mode    => '0440',
     replace => $config_file_replace,
     source  => $source,
@@ -107,7 +99,7 @@ class sudo(
   file { $config_dir:
     ensure  => $dir_ensure,
     owner   => 'root',
-    group   => hiera("sudo_config_file_group"),
+    group   => $sudo::params::config_file_group,
     mode    => '0550',
     recurse => $purge,
     purge   => $purge,
